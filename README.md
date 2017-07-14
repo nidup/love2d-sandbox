@@ -8,7 +8,7 @@ Playing with Löve 2d & Lua
 user@host:~/$ docker build -t nidup/love2d .
 ```
 
-## Run the docker image
+## Run the docker image
 
 ```
 user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$PWD":/home/developer --security-opt seccomp=unconfined nidup/love2d bash
@@ -19,3 +19,9 @@ user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-uni
 ```
 developer@image:~$:~/$ love src/
 ```
+
+## Credits
+
+Thanks a bunch to @DawsonG for this great tutorial:
+ - http://osmstudios.com/tutorials/your-first-love2d-game-in-200-lines-part-1-of-3
+ - https://github.com/DawsonG/Love2d-Tutorial-Scrolling-Shooter
