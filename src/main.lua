@@ -46,7 +46,7 @@ function love.update(dt)
         canShoot = true
     end
 
-    if love.keyboard.isDown(' ') and canShoot then
+    if love.keyboard.isDown('space') and canShoot then
         newBullet = { x = player.x + (player.img:getWidth()/2), y = player.y, img = bulletImg }
         table.insert(bullets, newBullet)
         gunSound:play()
