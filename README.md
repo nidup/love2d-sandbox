@@ -14,7 +14,22 @@ user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY \
     nidup/love2d:0.10.2 bash
 ```
 
-## Run the project in the image
+## Download examples
+
+```
+user@host:~$:~/$ cd examples
+user@host:~$:~/$ ./dowload.sh
+```
+
+## Run projects
+
+Run an example:
+
+```
+developer@image:~$:~/$ love examples/mrrescue/
+```
+
+Run your project:
 
 ```
 developer@image:~$:~/$ love src/

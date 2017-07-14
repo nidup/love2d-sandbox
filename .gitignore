@@ -2,3 +2,5 @@
 .emscripten
 .local
 build/web
+examples
+!examples/download.sh
