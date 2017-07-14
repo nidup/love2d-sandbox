@@ -31,7 +31,7 @@ user@host:~/$ docker build -t nidup/lovejs ./docker/lovejs/
 Package the debug release,
 
 ```
-docker run -ti -v "$PWD":/home/developer -p 8080:8080 nidup/lovejs bash
+user@host:~/$ docker run -ti -v "$PWD":/home/developer -p 8080:8080 nidup/lovejs bash
 developer@image:~/$ cd /usr/src/love.js/debug
 developer@image:/usr/src/love.js/debug$ python ../emscripten/tools/file_packager.py game.data --preload /home/developer/src/@/ --js-output=game.js
 developer@image:/usr/src/love.js/debug$ python -m SimpleHTTPServer 8080
@@ -53,7 +53,13 @@ Deploy on ghpages,
 developer@image:/usr/src/love.js/release-compatibility$ cp -r ./* /home/developer/build/web/
 ```
 
-Then commit and push.
+Then commit, rebase and push.
+
+```
+user@host:~/$ git checkout gh-pages
+user@host:~/$ git rebase master -i
+user@host:~/$ git push origin gh-pages -f
+```
 
 ## Credits
 
