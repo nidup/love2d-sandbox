@@ -20,7 +20,7 @@ user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY \
 developer@image:~$:~/$ love src/
 ```
 
-## Prepare the web build
+## Deploy the web build
 
 Cf. https://github.com/TannerRogalsky/love.js#usage
 
@@ -43,11 +43,11 @@ If everything is ok, package the compatibility release,
 
 ```
 developer@image:/usr/src/love.js/debug$ cd ../release-compatibility
-developer@image:/usr/src/love.js/debug$ python ../emscripten/tools/file_packager.py game.data --preload /home/developer/src/@/ --js-output=game.js
+developer@image:/usr/src/love.js/release-compatibility python ../emscripten/tools/file_packager.py game.data --preload /home/developer/src/@/ --js-output=game.js
 developer@image:/usr/src/love.js/release-compatibility$ python -m SimpleHTTPServer 8080
 ```
 
-Deploy on ghpages,
+Deploy on ghpages branch,
 
 ```
 developer@image:/usr/src/love.js/release-compatibility$ cp -r ./* /home/developer/build/web/
