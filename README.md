@@ -8,10 +8,16 @@ Playing with Löve 2d & Lua
 user@host:~/$ docker build -t nidup/love2d .
 ```
 
-## Run the docker image
+## Run the docker image (using host server x & sound support)
 
 ```
-user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$PWD":/home/developer --security-opt seccomp=unconfined nidup/love2d bash
+user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /dev/snd:/dev/snd \
+    -v "$PWD":/home/developer \
+    --security-opt seccomp=unconfined \
+     --privileged \
+    nidup/love2d bash
 ```
 
 ## Run the project in the image
