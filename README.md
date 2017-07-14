@@ -5,8 +5,15 @@ Playing with Löve 2d & Lua
 ## Build the docker image
 
 ```
-user@host:~/$ docker build -t nidup/love2d .
+user@host:~/$ docker build -t nidup/love:0.9.1 ./docker/0.9.1/
 ```
+
+## Push the docker image
+
+```
+user@host:~/$ docker push nidup/love:0.9.1
+```
+
 
 ## Run the docker image (using host server x & sound support)
 

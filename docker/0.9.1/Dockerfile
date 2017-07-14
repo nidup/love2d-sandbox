@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y love
+RUN apt-get update && apt-get install -y love=0.9.1-3ubuntu1
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
