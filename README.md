@@ -20,6 +20,41 @@ user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY \
 developer@image:~$:~/$ love src/
 ```
 
+## Prepare the web build
+
+Cf. https://github.com/TannerRogalsky/love.js#usage
+
+```
+user@host:~/$ docker build -t nidup/lovejs ./docker/lovejs/
+```
+
+Package the debug release,
+
+```
+docker run -ti -v "$PWD":/home/developer -p 8080:8080 nidup/lovejs bash
+developer@image:~/$ cd /usr/src/love.js/debug
+developer@image:/usr/src/love.js/debug$ python ../emscripten/tools/file_packager.py game.data --preload /home/developer/src/@/ --js-output=game.js
+developer@image:/usr/src/love.js/debug$ python -m SimpleHTTPServer 8080
+```
+
+Test the game at http://localhost:8080/
+
+If everything is ok, package the compatibility release,
+
+```
+developer@image:/usr/src/love.js/debug$ cd ../release-compatibility
+developer@image:/usr/src/love.js/debug$ python ../emscripten/tools/file_packager.py game.data --preload /home/developer/src/@/ --js-output=game.js
+developer@image:/usr/src/love.js/release-compatibility$ python -m SimpleHTTPServer 8080
+```
+
+Deploy on ghpages,
+
+```
+developer@image:/usr/src/love.js/release-compatibility$ cp -r ./* /home/developer/build/web/
+```
+
+Then commit and push.
+
 ## Credits
 
 Thanks a bunch to @DawsonG for this great tutorial:
