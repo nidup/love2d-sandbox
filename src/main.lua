@@ -2,6 +2,7 @@
 require("config")
 require("door")
 require("map")
+require("particles")
 require("player")
 require("resources")
 require("util")

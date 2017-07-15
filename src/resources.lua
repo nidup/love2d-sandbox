@@ -11,6 +11,9 @@ local IMAGE_FILES = {
 
 	"player_gun", "player_throw", "player_climb_down",
 	"player_climb_up", "player_running", "player_death",
+
+	"stream", "water", "shards",
+
 }
 
 local BACKGROUND_FILES = { "mountains", "night" }
@@ -44,6 +47,9 @@ function loadResources()
 		snd[v]:addTags("sfx")
 	end
 
+	-- Set special image attributes
+	img.stream:setWrap("repeat", "clamp")
+
 	-- Create quads
 	quad.player_gun = {}
 	for i=0,4 do
@@ -52,6 +58,24 @@ function loadResources()
 
 	quad.door_normal  = lg.newQuad( 0,0, 8,48, getSize(img.door))
 	quad.door_damaged = lg.newQuad(16,0, 8,48, getSize(img.door))
+
+	quad.water_out = {}
+	quad.water_out[0] = lg.newQuad(0,0, 8,15, getSize(img.water))
+	quad.water_out[1] = lg.newQuad(16,0, 8,15, getSize(img.water))
+
+	quad.water_end = {}
+	quad.water_end[0] = lg.newQuad(32,0, 16,15, getSize(img.water))
+	quad.water_end[1] = lg.newQuad(48,0, 16,15, getSize(img.water))
+
+	quad.water_hit = {}
+	for i=0,2 do
+		quad.water_hit[i] = lg.newQuad(i*16, 16, 16, 19, getSize(img.water))
+	end
+
+	quad.shard = {}
+	for i=0,7 do
+		quad.shard[i] = lg.newQuad(i*8,0,8,8, getSize(img.shards))
+	end
 
 	quad.tile = {}
 	local id = 1

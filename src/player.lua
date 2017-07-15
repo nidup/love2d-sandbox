@@ -27,7 +27,7 @@ function Player.create(x,y,level)
 
 	self.xspeed = 0
 	self.yspeed = 0
-	self.onGround = true -- TODO: original false
+	self.onGround = false
 	self.time = 0
 	self.lastDir = 1
 	self.state = PS_RUN
@@ -69,8 +69,8 @@ function Player.create(x,y,level)
 	self.animRun 	    = newAnimation(img.player_running, 16, 22, 0.12, 4)
 	self.animThrow      = newAnimation(img.player_throw, 16,32, 0.12, 4)
 	self.animClimb      = newAnimation(img.player_climb_down, 14, 23, 0.12, 4)
---	self.animCarryLeft  = newAnimation(img.human_1_carry_left,  22, 32, 0.12, 4)
---	self.animCarryRight = newAnimation(img.human_1_carry_right, 22, 32, 0.12, 4)
+	--self.animCarryLeft  = newAnimation(img.human_1_carry_left,  22, 32, 0.12, 4)
+	--self.animCarryRight = newAnimation(img.human_1_carry_right, 22, 32, 0.12, 4)
 
 	self.anim = self.animRun
 	self.waterFrame = 0 -- water stream's frame
@@ -142,31 +142,31 @@ function Player:update(dt)
 	self.waterFrame = self.waterFrame + dt*10
 
 	-- Collide items
---	for i,v in ipairs(map.items) do
---		if self:collideBox(v:getBBox()) == true then
---			self:applyItem(v)
---			map:addParticle(Sparkles.create(v.x+6, v.y+10, 15, 2))
---			map:addParticle(PopupText.create(v.id))
---			playSound("powerup")
---			v.alive = false
---			score = score + 500
---		end
---	end
+	for i,v in ipairs(map.items) do
+		if self:collideBox(v:getBBox()) == true then
+			self:applyItem(v)
+			map:addParticle(Sparkles.create(v.x+6, v.y+10, 15, 2))
+			map:addParticle(PopupText.create(v.id))
+			--playSound("powerup")
+			v.alive = false
+			score = score + 500
+		end
+	end
 
 	-- Collide fire
---	self:collideFire(dt)
+	self:collideFire(dt)
 	-- Add temperature over time
---	if map.type == MT_NORMAL then
---		self.temperature = self.temperature + TIME_DAMAGE*dt
---	end
---	self.temperature = cap(self.temperature, 0, self.max_temperature)
+	if map.type == MT_NORMAL then
+		self.temperature = self.temperature + TIME_DAMAGE*dt
+	end
+	self.temperature = cap(self.temperature, 0, self.max_temperature)
 
 	-- Detect death
---	if self.temperature >= self.max_temperature and self.state ~= PS_DEAD then
---		self.time = self.fly
---		self.yspeed = -230
---		self.state = PS_DEAD
---	end
+	if self.temperature >= self.max_temperature and self.state ~= PS_DEAD then
+		self.time = self.fly
+		self.yspeed = -230
+		self.state = PS_DEAD
+	end
 
 	-- Count up distance moved stat (16 pixels per meter)
 	local dist = (math.sqrt(self.xspeed^2 + self.yspeed^2)*dt)/16
@@ -223,7 +223,7 @@ function Player:updateRunning(dt)
 		self.xspeed = -1.0*self.xspeed
 	end
 	-- Update gravity
-	self.yspeed = self.yspeed --+ GRAVITY*dt
+	self.yspeed = self.yspeed + GRAVITY*dt
 	-- Move in y axis
 	self.y = self.y + self.yspeed*dt
 	if collideY(self) == true then
@@ -362,81 +362,81 @@ function Player:updateStream(dt)
 	elseif self.gundir == GD_HORIZONTAL then -- horizontal
 		for i = 1,span do
 			cx = cx + self.dir
---			if map:collideCell(cx,cy) == true then
---				map:hitCell(cx,cy,self.dir)
---				if self.dir == -1 then
---					self.streamLength = self.x-(cx+1)*16-13
---				else
---					self.streamLength = cx*16-self.x-10
---				end
---				self.streamCollided = true
---				break
---			end
+			if map:collideCell(cx,cy) == true then
+				map:hitCell(cx,cy,self.dir)
+				if self.dir == -1 then
+					self.streamLength = self.x-(cx+1)*16-13
+				else
+					self.streamLength = cx*16-self.x-10
+				end
+				self.streamCollided = true
+				break
+			end
 		end
 	end
 
 	-- Collide with entities
 	-- Calculate stream's collision box (table creation each frame!)
---	local sbox
---	if self.gundir == GD_UP then -- up
---		sbox = {x = self.x-4.5, y = self.y-17-self.streamLength, w = 9, h = self.streamLength}
---	elseif self.gundir == GD_HORIZONTAL then -- horizontal
---		if self.dir == -1 then
---			sbox = {x = self.x-9-self.streamLength, y = self.y-10, w = self.streamLength, h = 9}
---		else
---			sbox = {x = self.x+9, y = self.y-10, w = self.streamLength, h = 9}
---		end
---	elseif self.gundir == GD_DOWN then -- down
---		sbox = {x = self.x-4.5, y = self.y+1, w = 9, h = self.streamLength}
---	end
+	local sbox
+	if self.gundir == GD_UP then -- up
+		sbox = {x = self.x-4.5, y = self.y-17-self.streamLength, w = 9, h = self.streamLength}
+	elseif self.gundir == GD_HORIZONTAL then -- horizontal
+		if self.dir == -1 then
+			sbox = {x = self.x-9-self.streamLength, y = self.y-10, w = self.streamLength, h = 9}
+		else
+			sbox = {x = self.x+9, y = self.y-10, w = self.streamLength, h = 9}
+		end
+	elseif self.gundir == GD_DOWN then -- down
+		sbox = {x = self.x-4.5, y = self.y+1, w = 9, h = self.streamLength}
+	end
 
 	-- Collide with enemies
---	local closestHit = nil
---	local min = 9999
---	-- Collide with objects and entities
---	for j,w in ipairs({map.humans, map.objects, map.enemies}) do
---		for i,v in ipairs(w) do
---			if v:collideBox(sbox) == true then
---				local dist = self:cutStream(v:getBBox())
---				if dist < min then
---					closestHit = v
---					min = dist
---				end
---				self.streamCollided = true
---			end
---		end
---	end
+	local closestHit = nil
+	local min = 9999
+	-- Collide with objects and entities
+	for j,w in ipairs({map.humans, map.objects, map.enemies}) do
+		for i,v in ipairs(w) do
+			if v:collideBox(sbox) == true then
+				local dist = self:cutStream(v:getBBox())
+				if dist < min then 
+					closestHit = v
+					min = dist
+				end
+				self.streamCollided = true
+			end
+		end
+	end
 	-- Collide with boss
---	if map.type == MT_BOSS then
---		if map.boss:collideBox(sbox) == true then
---			local dist = self:cutStream(map.boss:getBBox())
---			if dist < min then
---				closestHit = map.boss
---				min = dist
---			end
---			self.streamCollided = true
---		end
---	end
+	if map.type == MT_BOSS then
+		if map.boss:collideBox(sbox) == true then
+			local dist = self:cutStream(map.boss:getBBox())
+			if dist < min then
+				closestHit = map.boss
+				min = dist
+			end
+			self.streamCollided = true
+		end
+	end
 	-- Collide with fire
---	for j,w in pairs(map.fire) do
---		for i,v in pairs(w) do
---			if v:collideBox(sbox) == true then
---				local dist = self:cutStream(v:getBBox())
---				if dist < min then
---					closestHit = v
---					min = dist
---				end
---				self.streamCollided = true
---			end
---		end
---	end
+	for j,w in pairs(map.fire) do
+		for i,v in pairs(w) do
+			if v:collideBox(sbox) == true then
+				local dist = self:cutStream(v:getBBox())
+				if dist < min then
+					closestHit = v
+					min = dist
+				end
+				self.streamCollided = true
+			end
+		end
+	end
 	-- If an object was hit, cut stream and hit object
---	if closestHit ~= nil then
---		closestHit:shot(dt,self.dir)
---		self.streamLength = min
---	end
+	if closestHit ~= nil then
+		closestHit:shot(dt,self.dir)
+		self.streamLength = min
+	end
 	-- Cap stream length
---	self.streamLength = math.max(0, self.streamLength)
+	self.streamLength = math.max(0, self.streamLength)
 end
 
 --- Cuts the stream off after colliding with a bounding box
@@ -532,7 +532,7 @@ function Player:action(action)
 		end
 	elseif action == "shoot" then
 		if self.state == PS_RUN and self.overloaded == true then
-			playSound("empty")
+			--playSound("empty")
 		end
 	end
 end
@@ -612,6 +612,7 @@ end
 function Player:climb()
 	local below = map:getPoint(self.x, self.y+1)
 	local top    = map:getPoint(self.x, self.y-22)
+
 	if below == 5 or below == 137 or below == 153 or below == 8 or below == 247
 	or top == 5 or top == 137 or top == 153 or top == 8 or top == 247
 	or top == 63 or top == 79 or below == 13 then
@@ -652,7 +653,6 @@ function Player:draw()
 	self.fly = math.floor(self.y)
 
 	if self.state == PS_RUN then
-
 		-- Draw player
 		if self.onGround == false then
 			self.anim:draw(self.flx, self.fly, 0, self.dir, 1, 8, 22, 2)

@@ -64,8 +64,8 @@ function Door:shot(dt,dir)
 		self.state = 1
 		self.xspeed = 50*dir
 		self.yspeed = -100
-		score = score + SCORE
-		playSound("door")
+		--score = score + SCORE
+		--playSound("door")
 		stats[5] = stats[5] + math.random(80,120)
 	end
 end
