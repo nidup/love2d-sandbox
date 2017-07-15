@@ -16,31 +16,38 @@ function ingame.newGame()
 	transition_time = 0
 	warning_frame = 0
 	time = 0
-	local startx, starty = 100, 100;
+	section = 1
+
+	map = Map.create(section, level)
+	local startx, starty = map:getStart()
 	player = Player.create(startx,starty,level)
+
 end
 
 function ingame.update(dt)
 
 	updateKeys()
 
-	if love.keyboard.isDown('escape') then
-		love.event.push('quit')
-	end
-
 	-- INGAME STATE
 	--if ingame_state == INGAME_ACTIVE then
 		time = time + dt
 
-		-- Update entities
+		-- Update map entities
+		map:update(dt)
+
+		-- Update player
 		player:update(dt)
 	--end
 end
 
 function ingame.draw()
 
+	-- Draw back
+	map:drawBack()
 	-- Draw player
 	player:draw()
+	-- Draw front
+	map:drawFront()
 
 	if player.state == PS_DEAD then
 		player:draw()
@@ -65,7 +72,7 @@ end
 function ingame.keypressed(k,uni)
 
 	if k == "escape" then
-		ingame_menu.enter()
+		love.event.push('quit')
 	else
 		for a, key in pairs(config.keys) do
 			if k == key then

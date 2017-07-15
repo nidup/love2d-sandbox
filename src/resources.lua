@@ -6,13 +6,19 @@ font = {}   -- global Fonts
 local snd = {}	-- sound Sources
 
 local IMAGE_FILES = {
+
+	"tiles",
+	"door",
+
 	"player_gun", "player_throw", "player_climb_down",
 	"player_climb_up", "player_running", "player_death",
 }
 
-local BACKGROUND_FILES = {}
+local BACKGROUND_FILES = { "mountains", "night" }
 
 local SOUND_FILES = {}
+
+NUM_ROOMS = { [10] = 6, [11] = 6, [17] = 6, [24] = 6 }
 
 --- Returns size of an Image as two return values
 -- Saves some typing when creating quads
@@ -47,5 +53,17 @@ function loadResources()
 	quad.player_gun = {}
 	for i=0,4 do
 		quad.player_gun[i] = lg.newQuad(i*12,0,12,18, getSize(img.player_gun))
+	end
+
+	quad.door_normal  = lg.newQuad( 0,0, 8,48, getSize(img.door))
+	quad.door_damaged = lg.newQuad(16,0, 8,48, getSize(img.door))
+
+	quad.tile = {}
+	local id = 1
+	for iy = 0,15 do
+		for ix = 0,15 do
+			quad.tile[id] = lg.newQuad(ix*16, iy*16, 16, 16, getSize(img.tiles))
+			id = id + 1
+		end
 	end
 end

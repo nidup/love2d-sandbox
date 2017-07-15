@@ -219,23 +219,23 @@ function Player:updateRunning(dt)
 
 	-- Move in x axis
 	self.x = self.x + self.xspeed*dt
---	if collideX(self) == true then
---		self.xspeed = -1.0*self.xspeed
---	end
+	if collideX(self) == true then
+		self.xspeed = -1.0*self.xspeed
+	end
 	-- Update gravity
 	self.yspeed = self.yspeed --+ GRAVITY*dt
 	-- Move in y axis
 	self.y = self.y + self.yspeed*dt
---	if collideY(self) == true then
---		self.yspeed = 0
---	end
+	if collideY(self) == true then
+		self.yspeed = 0
+	end
 
---	self.canGrab = false
---	for i,v in ipairs(map.humans) do
---		if self:collideBox(v:getBBox()) and v:canGrab() == true then
---			self.canGrab = true
---		end
---	end
+	self.canGrab = false
+	for i,v in ipairs(map.humans) do
+		if self:collideBox(v:getBBox()) and v:canGrab() == true then
+			self.canGrab = true
+		end
+	end
 
 	-- Set animation speeds
 	self.anim:setSpeed(math.abs(self.xspeed)/MAX_SPEED)
