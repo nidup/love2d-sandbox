@@ -18,7 +18,7 @@ user@host:~/$ docker run -ti -e DISPLAY=$DISPLAY \
 
 ```
 user@host:~$:~/$ cd examples
-user@host:~$:~/$ ./dowload.sh
+user@host:~$:~/$ ./download.sh
 ```
 
 ## Run projects
@@ -75,12 +75,6 @@ user@host:~/$ git checkout gh-pages
 user@host:~/$ git rebase master -i
 user@host:~/$ git push origin gh-pages -f
 ```
-
-## Credits
-
-Thanks a bunch to @DawsonG for this great tutorial:
- - http://osmstudios.com/tutorials/your-first-love2d-game-in-200-lines-part-1-of-3
- - https://github.com/DawsonG/Love2d-Tutorial-Scrolling-Shooter
 
 # Update Docker images
 
