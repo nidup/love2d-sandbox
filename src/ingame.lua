@@ -30,13 +30,18 @@ function ingame.update(dt)
 
 	-- INGAME STATE
 	--if ingame_state == INGAME_ACTIVE then
-		time = time + dt
+	time = time + dt
 
-		-- Update map entities
-		map:update(dt)
+	-- Update map entities
+	map:update(dt)
 
-		-- Update player
-		player:update(dt)
+	-- Update player
+	player:update(dt)
+
+	-- Calculate translation offest
+	translate_x = cap(player.x-WIDTH/2, 0, MAPW-WIDTH)
+	translate_y = cap(player.y-11-HEIGHT/2, 0, MAPH-HEIGHT+30)
+	map:setDrawRange(translate_x, translate_y, WIDTH, HEIGHT)
 	--end
 end
 

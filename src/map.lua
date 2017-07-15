@@ -336,6 +336,7 @@ end
 --  @param batch Sprite batch to fill
 --  @param test Function on the id of a tile. Must return true or false.
 function Map:fillBatch(batch, test)
+
 	batch:clear()
 	local sx = math.floor(self.viewX/16)
 	local sy = math.floor(self.viewY/16)

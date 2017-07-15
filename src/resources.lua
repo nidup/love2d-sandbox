@@ -7,8 +7,7 @@ local snd = {}	-- sound Sources
 
 local IMAGE_FILES = {
 
-	"tiles",
-	"door",
+	"tiles", "door",
 
 	"player_gun", "player_throw", "player_climb_down",
 	"player_climb_up", "player_running", "player_death",
@@ -28,6 +27,9 @@ end
 
 --- Load all resources including images, quads sound effects etc.
 function loadResources()
+	-- Create canvas for lighting effects
+	canvas = lg.newCanvas(256,256)
+	canvas:setFilter("nearest","nearest")
 
 	-- Load all images
 	for i,v in ipairs(IMAGE_FILES) do
@@ -41,13 +43,6 @@ function loadResources()
 		snd[v] = love.audio.newSource("data/sfx/"..v..".wav","static")
 		snd[v]:addTags("sfx")
 	end
-
-	img.human_run = { img.human_1_run, img.human_2_run, img.human_3_run, img.human_4_run }
-	img.human_carry_left = { img.human_1_carry_left, img.human_2_carry_left, img.human_3_carry_left, img.human_4_carry_left }
-	img.human_carry_right = { img.human_1_carry_right, img.human_2_carry_right, img.human_3_carry_right, img.human_4_carry_right }
-	img.human_fly = { img.human_1_fly, img.human_2_fly, img.human_3_fly, img.human_4_fly }
-	img.human_burn = { img.human_1_burn, img.human_2_burn, img.human_3_burn, img.human_4_burn }
-	img.human_panic = { img.human_1_panic, img.human_2_panic, img.human_3_panic, img.human_4_panic }
 
 	-- Create quads
 	quad.player_gun = {}
@@ -66,4 +61,8 @@ function loadResources()
 			id = id + 1
 		end
 	end
+
+	quad.player_death_up   = lg.newQuad( 0, 0, 16, 24, getSize(img.player_death))
+	quad.player_death_down = lg.newQuad(16, 0, 16, 24, getSize(img.player_death))
+	quad.player_death_suit = lg.newQuad(32, 0, 16, 10, getSize(img.player_death))
 end
